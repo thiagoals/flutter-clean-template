@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_login_clean/app/modules/login/domain/entities/credentials.dart';
 import 'package:flutter_login_clean/app/modules/login/domain/usecases/login_usecase.dart';
 import 'package:flutter_login_clean/app/modules/login/presenter/validators/validators.dart';
+import 'package:flutter_login_clean/app/modules/shared/presenter/interface/toaster.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
@@ -17,9 +19,10 @@ class LoginController = _LoginControllerBase with _$LoginController;
 abstract class _LoginControllerBase with Store{
 
   final Validators validators;
+  final Toaster toaster;
   final LoginUseCase usecase;
 
-  _LoginControllerBase(this.validators,this.useCase);
+  _LoginControllerBase(this.validators, this.toaster,this.usecase);
 
   @observable
   String username = '';
@@ -52,12 +55,12 @@ abstract class _LoginControllerBase with Store{
       Credentials(username: username, password: password);
 
   @action
-  login() async{
+  login(BuildContext context) async{
     isLoading = true;
     var response = await usecase(credential);
     response.fold(
-            (l) => null,
-            (r) => null
+            (l) => toaster.showToast(context, "Usuário e/ou senha incorreto(s)", "Fechar"),
+            (r) => toaster.showToast(context, "Tudo certo", "Fechar"),
     );
     isLoading = false;
   }
