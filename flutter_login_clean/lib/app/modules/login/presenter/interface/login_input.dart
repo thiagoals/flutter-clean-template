@@ -3,7 +3,6 @@ import 'package:flutter_login_clean/app/modules/login/presenter/controllers/logi
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mobx/mobx.dart';
 
 class LoginInput extends StatefulWidget{
   const LoginInput({super.key});
